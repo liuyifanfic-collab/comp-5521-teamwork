@@ -1,0 +1,49 @@
+
+
+  ERC20HTLC（测试矩阵 P0 + P1）
+    查询与正常锁定
+      ✔ G01 不存在的 swap 返回七字段零值 (757ms)
+      ✔ L01 正常 lock：swapId、七字段、状态、余额、事件 (140ms)
+      ✔ G02 getSwap 返回顺序与类型正确 (45ms)
+    L：lock 校验与失败路径
+      ✔ L02 token=0 -> InvalidToken，无状态污染
+      ✔ L03 recipient=0 -> InvalidAddress，无状态污染
+      ✔ L04 amount=0 -> InvalidAmount，无状态污染
+      ✔ L05 hashlock=0 -> InvalidHashlock，无状态污染
+      ✔ L06 过去 / 恰等于当前时间的 timelock -> InvalidTimelock
+      ✔ L07 未 approve -> revert，无状态污染
+      ✔ L08 allowance 不足 -> revert
+      ✔ L09 余额不足但 allowance 足够 -> revert
+      ✔ L10 同参数两次 lock -> 两个不同 swapId、两笔独立 Active (87ms)
+      ✔ L11 lock 附带 ETH -> revert，无 swap
+      ✔ L12 直接转 ETH -> UnexpectedEther
+      ✔ L13 直接转 MST 不形成 swap、不改变已有 amount
+      ✔ L14 (P1) 非标准 ERC20 返回 false -> SafeERC20 revert、状态回滚
+    C：claim 领取路径
+      ✔ C01 正确 secret 领取：余额、状态、事件公开 secret (51ms)
+      ✔ C02 不存在的 swapId -> SwapNotFound
+      ✔ C03 越权领取 -> UnauthorizedReceiver (82ms)
+      ✔ C04 错误 secret -> InvalidSecret，之后仍可正确领取
+      ✔ C05 到期后 claim -> SwapExpired
+      ✔ C06 now == timelock 时 claim -> SwapExpired
+      ✔ C07 重复 claim -> SwapNotActive，不重复转账
+      ✔ C08 refund 后 claim -> SwapNotActive (38ms)
+      ✔ C09 (P1) 恶意代币回调重入：资产只释放一次 (59ms)
+    R：refund 退款路径
+      ✔ R01 到期后退款：金额、状态、事件
+      ✔ R02 到期前退款 -> SwapNotExpired
+      ✔ R03 非 sender 退款 -> UnauthorizedSender (84ms)
+      ✔ R04 不存在的 swapId -> SwapNotFound
+      ✔ R05 重复退款 -> SwapNotActive (38ms)
+      ✔ R06 claim 后退款 -> SwapNotActive
+      ✔ R07 now == timelock 时 refund 成功
+      ✔ R08 到期后失败的 claim 不污染状态，refund 成功 (39ms)
+      ✔ R09 (P1) 恶意代币重入 refund：资产仅退一次 (48ms)
+    G：状态与通用性
+      ✔ G03 claim / refund 后查询终态、其它字段不变 (39ms)
+      ✔ G04 两个 swap 交叉操作互不影响
+      ✔ G05 更换账户 / 1 wei / hashlock / deadline，无硬编码
+
+
+  37 passing (2s)
+
