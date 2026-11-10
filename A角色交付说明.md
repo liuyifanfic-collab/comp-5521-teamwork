@@ -2,7 +2,8 @@
 
 分工（`7212aa4085ccc4f493b7db866ccb8aed.jpg`）：A = 公共接口/状态设计 + `ERC20HTLC.sol`（MST 锁定、领取、退款、事件、安全检查）；`ETHHTLC.sol` 由 B 实现。
 
-链：Ethereum Sepolia｜资产：MST（ERC20，18 decimals）｜无构造函数、无参部署｜solc 0.8.28 / OpenZeppelin v5。
+链：Ethereum Sepolia｜资产：MST（ERC20，18 decimals），`token` 由每次 `lock` 传入、合约不硬编码地址｜无构造函数、无参部署｜solc 0.8.28 / OpenZeppelin v5。
+仓库：`https://github.com/liuyifanfic-collab/comp-5521-teamwork`，分支 `main`；代码与本说明均已推送，C/D 可直接取用。
 
 ## 接口冻结声明
 
@@ -10,25 +11,27 @@
 
 | 冻结项 | 基准 |
 |---|---|
-| 函数签名、`getSwap` 返回顺序 | `IERC20HTLC.sol`；下文「函数」 |
+| ERC20HTLC 函数签名；两合约共用的 `claim/refund/getSwap` 签名与返回顺序 | `IERC20HTLC.sol`；下文「函数」 |
 | 事件名 / 参数顺序 / indexed | 同上；下文「事件」 |
 | 错误名 / 参数 / 校验顺序 | 同上；下文「错误」「校验序」 |
 | status 取值、时间边界、终态规则 | 下文「状态与不变量」 |
 | hashlock、swapId 公式 | 同上 |
 
-变更规则：如需修改上述任一项，由 A 统一发布新版本，并同步合约、ABI/bytecode、单测与本文；其他同学不得单方面改动。
+范围说明：冻结仅覆盖 ERC20HTLC 接口与两合约共用部分；ETHHTLC 的 `lock(recipient,hashlock,timelock) payable` 由 B 按「接入要点」的差异定义，不继承 `IERC20HTLC`，不属于被冻结的签名。
+
+变更规则：如需修改上述任一项，由 A 统一发布新版本，并同步合约、ABI/bytecode、单测与本文；其他同学不得单方面改动，发现问题时先反馈 A。
 
 ## 产物
 
 | 文件 | 用途 |
 |---|---|
-| `contracts/ERC20HTLC.sol` | 实现；合入组内 Hardhat 项目 |
+| `contracts/ERC20HTLC.sol` | 实现（团队仓库 `contracts/` 下） |
 | `contracts/IERC20HTLC.sol` | 公共接口（事件/错误/状态/签名）；B 对齐基准 |
 | `abi/ERC20HTLC.abi.json` | ABI → C/D |
 | `abi/ERC20HTLC.bytecode.txt` | creation bytecode → D 部署 |
 | `test/ERC20HTLC.test.js` | 单测：矩阵 P0 全覆盖 + L14/C09/R09 |
-| `evidence/test-output.txt` | 运行输出（37 passing，退出码 0） |
-| `contracts/mocks/` | MockMST、恶意代币；仅本地单测，勿进最终 `contracts/` |
+| `evidence/test-output.txt` | 运行输出（37 passing，退出码 0）；测试矩阵未随仓库提交，覆盖明细以此为准 |
+| `contracts/mocks/` | MockMST、恶意代币；仅本地单测，开发仓库可保留，课程最终提交包的 `contracts/` 需排除 |
 | `hardhat.config.js`、`package.json` | 本地编译测试；无双链网络/RPC/私钥/部署脚本 |
 
 ## 状态与不变量
@@ -61,7 +64,9 @@ event Claimed(bytes32 indexed swapId, bytes32 secret);
 event Refunded(bytes32 indexed swapId);
 ```
 
-错误：`InvalidAddress` `InvalidToken` `InvalidAmount` `InvalidHashlock` `InvalidTimelock` `UnexpectedEther` `SwapAlreadyExists(swapId)` `SwapNotFound(swapId)` `SwapNotActive(swapId)` `UnauthorizedReceiver(swapId,caller)` `UnauthorizedSender(swapId,caller)` `SwapExpired(swapId)` `SwapNotExpired(swapId)` `InvalidSecret(swapId)`
+错误（接口声明 14 个）：`InvalidAddress` `InvalidToken` `InvalidAmount` `InvalidHashlock` `InvalidTimelock` `UnexpectedEther` `SwapAlreadyExists(swapId)` `SwapNotFound(swapId)` `SwapNotActive(swapId)` `UnauthorizedReceiver(swapId,caller)` `UnauthorizedSender(swapId,caller)` `SwapExpired(swapId)` `SwapNotExpired(swapId)` `InvalidSecret(swapId)`
+
+ABI 共 16 个错误，另含 OpenZeppelin 的 `ReentrancyGuardReentrantCall`（重入被拦）与 `SafeERC20FailedOperation`（非标准代币转账失败，即 L14）；`lock` 时 approve / 余额不足抛 MST 侧 OZ ERC20 错误。C/D 须保留通用 revert 处理，勿只映射上述 14 个。
 
 校验序（错误预期）：`claim` NotFound → NotActive → UnauthorizedReceiver → Expired → InvalidSecret；`refund` NotFound → NotActive → UnauthorizedSender → NotExpired。
 
@@ -69,20 +74,22 @@ event Refunded(bytes32 indexed swapId);
 
 | 角色 | 要点 |
 |---|---|
-| B | 以冻结接口为准：ETHHTLC 复用同一套状态/事件/错误/`getSwap` 顺序/时间边界；差异：`lock(recipient,hashlock,timelock)` payable、`amount=msg.value`、`token=address(0)`、零值拒绝、ETH 用 `call` + 先置终态 + 防重入；ETH 转账失败错误需自定义 |
-| C | 用 `abi/ERC20HTLC.abi.json`；`status` 是 `uint8` 非字符串；不存在 ID 返回全零；`Claimable/Expired/Refundable` 不上链，由 status+now 派生；合约会拒绝越权/过期/重复操作，勿只隐藏按钮 |
+| B | 以冻结接口为准：ETHHTLC 复用同一套状态/事件/错误/`getSwap` 顺序/时间边界，但不继承 `IERC20HTLC`；差异：`lock(recipient,hashlock,timelock)` payable、`amount=msg.value`、`token=address(0)`、零值拒绝、ETH 用 `call` + 先置终态 + 防重入；ETH 转账失败错误需自定义 |
+| C | 用 `abi/ERC20HTLC.abi.json`；`status` 是 `uint8` 非字符串；不存在 ID 返回全零；`Claimable/Expired/Refundable` 不上链，由 status+now 派生；合约会拒绝越权/过期/重复操作，勿只隐藏按钮；revert 处理见「错误」 |
 | D | 部署无参；`swapId` 从 `Locked` 事件取（勿读交易返回值）；`secret` 从 `Claimed` 事件取；lock 前先 approve；建第二把锁前核对参数且保证 ETH 锁 `T2 < MST 锁 T1`；两链分别存 swapId；超时各自 refund |
-| E | 产物与证据见上表；接口已冻结 `Frozen v1.0`；产物未合入组内仓库、B 的 ETHHTLC 审查待其提交 |
+| E | 产物与证据见上表；接口已冻结 `Frozen v1.0`；代码与产物已推送至团队仓库 `main`，可直接取用；B 的 ETHHTLC 审查待其提交 |
 
 ## 复现
 
 ```
-npm install
+npm install --registry=https://registry.npmmirror.com
 npx hardhat compile   # Compiled 16 Solidity files successfully (evm target: paris)
 npx hardhat test      # 37 passing
 ```
 
+本机 Node 未加入 PATH 时需先加入；测试矩阵未随仓库提交，覆盖明细见 `evidence/test-output.txt`。
+
 ## 待组内完成
 
-- 将冻结接口与产物合入组内 Hardhat 项目，向 C/D 交付 ABI/bytecode；D 部署后联调
+- D 部署后联调；C 接入真实合约
 - B 按冻结接口实现 `ETHHTLC.sol`；提交后由 A 完成代码审查并留证据
