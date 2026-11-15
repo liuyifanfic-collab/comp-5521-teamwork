@@ -1,0 +1,8 @@
+/* Dark Veil：移植自 React Bits（MIT + Commons Clause），画布样式与原版相同；容器样式不用（背景层自己是 position: fixed）。 */
+.dark-veil-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
