@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTLC Cross-Chain Swap</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">⇄</span>
+        <strong>HTLC <span class="gradient-text" data-i18n="brand.title">跨链交换</span></strong>
+        <span id="profile-badge" class="badge"></span>
+      </div>
+      <div class="topbar-right">
+        <!-- 钱包组：账户、所在网络、连接状态放在一起 -->
+        <div class="wallet-group">
+          <select id="dev-account" class="hidden" data-i18n-title="dev.accountTitle"></select>
+          <div class="tabs" role="radiogroup" data-i18n-aria="net.aria">
+            <button id="btn-switch-mst" class="tab" role="radio" data-i18n="net.mst"></button>
+            <button id="btn-switch-eth" class="tab" role="radio" data-i18n="net.eth"></button>
+          </div>
+          <button id="btn-connect" class="btn primary"></button>
+        </div>
+        <span class="divider" aria-hidden="true"></span>
+        <!-- 语言切换独立放在最右侧 -->
+        <div class="tabs compact" role="radiogroup" data-i18n-aria="lang.aria">
+          <button class="tab" role="radio" data-lang="zh" lang="zh-CN">中</button>
+          <button class="tab" role="radio" data-lang="en" lang="en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <!-- 概览：余额 + 双链协议进度 -->
+      <section class="card overview" id="account-card">
+        <div class="card-head">
+          <h2 data-i18n="card.account"></h2>
+          <div id="contract-line" class="contract-line"></div>
+        </div>
+        <div id="account-info" class="stats"></div>
+        <ol id="timeline" class="timeline"></ol>
+      </section>
+
+      <div class="columns">
+        <div class="col">
+          <section class="card" id="workflow-card">
+            <div class="card-head">
+              <h2 data-i18n="card.workflow"></h2>
+              <div class="tabs">
+                <button class="tab" data-role="alice" data-i18n="role.alice"></button>
+                <button class="tab" data-role="bob" data-i18n="role.bob"></button>
+              </div>
+            </div>
+            <div id="steps"></div>
+            <div class="card-foot">
+              <button id="btn-reset" class="btn ghost small" data-i18n="btn.reset"></button>
+            </div>
+          </section>
+        </div>
+
+        <div class="col">
+          <section class="card" id="monitor-card">
+            <div class="card-head">
+              <h2 data-i18n="card.monitor"></h2>
+              <span id="last-refresh" class="muted small"></span>
+            </div>
+            <div id="final-banner"></div>
+            <div class="swap-stack">
+              <div id="card-mst" class="swap-card"></div>
+              <div id="card-eth" class="swap-card"></div>
+            </div>
+          </section>
+
+          <section class="card" id="log-card">
+            <h2 data-i18n="card.log"></h2>
+            <ol id="tx-log" class="tx-log"></ol>
+          </section>
+        </div>
+      </div>
+    </main>
+    <div id="toast" class="toast hidden"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
