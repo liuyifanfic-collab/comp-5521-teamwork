@@ -1,0 +1,707 @@
+{
+  "generatedAt": "2026-11-16T05:44:18.568Z",
+  "node": "v24.21.0",
+  "network": "local",
+  "labels": {
+    "success": "local-success-20261116-054418",
+    "refund": "local-refund-20261116-054418"
+  },
+  "nodes": {
+    "ethereum": {
+      "key": "ethereum",
+      "label": "Ethereum local",
+      "port": 8545,
+      "chainId": 31337,
+      "rpcUrl": "http://127.0.0.1:8545",
+      "started": true
+    },
+    "arbitrum": {
+      "key": "arbitrum",
+      "label": "Arbitrum local",
+      "port": 8546,
+      "chainId": 421614,
+      "rpcUrl": "http://127.0.0.1:8546",
+      "started": true
+    }
+  },
+  "deployment": {
+    "network": "local",
+    "updatedAt": "2026-11-16T05:44:20.058Z",
+    "chainIds": {
+      "ethereum": 31337,
+      "arbitrum": 421614
+    },
+    "mstAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "mst": {
+      "name": "MySimpleToken",
+      "contract": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "chainId": 31337,
+      "txHash": "0x433af945d0bb02938db10081d51cc701ece1600395cf9e693106d178893c5924",
+      "blockNumber": 1,
+      "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      "explorer": null,
+      "mintTo": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "mintAmount": "1000000000000000000000000",
+      "mintTxHash": "0xef6fad76ca69e2b0376dff7c03092e0a8d9bf7141703aa6cae2b4c366a848e7a",
+      "abiSha256": "9c8d1ff9b7edf1b60bdf5347f2675dae394be939af913ea8f2a9ceee296f69b1",
+      "bytecodeSha256": "3673cf1e14c05a6dacf43feba1c1d2d44d894d1810cb16e32346927622b5616d",
+      "deployedAt": "2026-11-16T05:44:19.839Z"
+    },
+    "chains": {
+      "ethereum": {
+        "name": "ERC20HTLC",
+        "contract": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+        "chainId": 31337,
+        "txHash": "0xf04421f3343ab17b9e53489ea3d273e0f50cbfbcdb670278df2f741f083595b8",
+        "blockNumber": 3,
+        "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "explorer": null,
+        "abiSha256": "322a9a70c01f59f94b28aab83eb83c783ba0b8f0884e3f28824ee441faffa1ac",
+        "bytecodeSha256": "ed7b1348f99d51197ec06e04fb54cc1354bea595521525eb8e31f420210796f3",
+        "deployedAt": "2026-11-16T05:44:19.934Z"
+      },
+      "arbitrum": {
+        "name": "ETHHTLC",
+        "contract": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        "chainId": 421614,
+        "txHash": "0x2bfcf6ff916152601736d751f0dc6ef97e851c4772f2460c8ab269068f663123",
+        "blockNumber": 1,
+        "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "explorer": null,
+        "abiSha256": "04deb47a8264c9ce82c05f48837ac8b90862806b906529450676c8abbf557820",
+        "bytecodeSha256": "0592c394670fb535c2f14a4d62d695b1be041f222baf86345e272a6c7f890b45",
+        "deployedAt": "2026-11-16T05:44:20.058Z"
+      }
+    }
+  },
+  "success": {
+    "label": "local-success-20261116-054418",
+    "scenario": "success",
+    "network": "local",
+    "status": "completed",
+    "createdAt": "2026-11-16T05:44:20.077Z",
+    "updatedAt": "2026-11-16T05:44:20.943Z",
+    "hashlock": "0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e",
+    "secretFingerprint": "35f759a59590",
+    "parties": {
+      "alice": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "bob": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"
+    },
+    "amounts": {
+      "mst": "100000000000000000000",
+      "eth": "10000000000000000"
+    },
+    "humanAmounts": {
+      "mst": "100.0",
+      "eth": "0.01"
+    },
+    "timelocks": {
+      "base": 1794807860,
+      "mst": 1794808160,
+      "eth": 1794808010,
+      "mstSeconds": 300,
+      "ethSeconds": 150,
+      "gapSeconds": 150,
+      "minGapSeconds": 60
+    },
+    "swaps": {
+      "ethereum": {
+        "chain": "ethereum",
+        "swapId": "0x237ea0798df881041de2578ac961f94516af3f11011078cad981f8842c3c2ba1",
+        "txHash": "0xf8ba83dc0aa5d9e5cc943ce72ff85bc1c00cf0d0f8fc243f3fdad22ca21b0bc7",
+        "blockNumber": 5,
+        "sender": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        "recipient": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "token": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        "amount": "100000000000000000000",
+        "timelock": 1794808160
+      },
+      "arbitrum": {
+        "chain": "arbitrum",
+        "swapId": "0xf0fe6a4dd7c00801ae42d3b8594b5bc3286e4d254bbb3eb4941a892db838e72b",
+        "txHash": "0xa63d0d994b248efb4b49074161604618c13e7b57e0e32097d7d9eb1f458d5975",
+        "blockNumber": 2,
+        "sender": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "recipient": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        "token": "0x0000000000000000000000000000000000000000",
+        "amount": "10000000000000000",
+        "timelock": 1794808010
+      }
+    },
+    "approvals": {
+      "ethereum": {
+        "txHash": "0xd76f536a799467e8e481fdaa4db67293f50b36d411a9636c8893c4563ec53754",
+        "blockNumber": 4
+      }
+    },
+    "claims": {
+      "arbitrum": {
+        "txHash": "0x2ad6d2800f845dfadf1ca6820ab80f8b563fcb0947d83155fba7bbe0f49bb980",
+        "blockNumber": 3
+      },
+      "ethereum": {
+        "txHash": "0x776185297ee99a4a6a7e0734003d331552152dcc1edf26901d69034dd788e496",
+        "blockNumber": 6
+      }
+    },
+    "refunds": {},
+    "checks": [
+      {
+        "id": "V01",
+        "ok": true,
+        "label": "both swaps exist",
+        "detail": "MST status 1, ETH status 1"
+      },
+      {
+        "id": "V02",
+        "ok": true,
+        "label": "both locks share the same hashlock",
+        "detail": "0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e vs 0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e"
+      },
+      {
+        "id": "V03",
+        "ok": true,
+        "label": "keccak256(secret) equals the hashlock",
+        "detail": "0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e"
+      },
+      {
+        "id": "V04",
+        "ok": true,
+        "label": "MST lock uses the configured MST token",
+        "detail": "0x5FbDB2315678afecb367f032d93F642f64180aa3 vs 0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      },
+      {
+        "id": "V05",
+        "ok": true,
+        "label": "ETH lock uses address(0) as the asset marker",
+        "detail": "0x0000000000000000000000000000000000000000"
+      },
+      {
+        "id": "V06",
+        "ok": true,
+        "label": "participants are mirrored across chains",
+        "detail": "MST 0x70997970C51812dc3A010C7d01b50e0d17dc79C8->0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC; ETH 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC->0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+      },
+      {
+        "id": "V07a",
+        "ok": true,
+        "label": "MST amount matches the scenario",
+        "detail": "100.0 MST (expected 100.0 MST)"
+      },
+      {
+        "id": "V07b",
+        "ok": true,
+        "label": "ETH amount matches the scenario",
+        "detail": "0.01 ETH (expected 0.01 ETH)"
+      },
+      {
+        "id": "V08",
+        "ok": true,
+        "label": "T_ETH < T_MST with the configured safety gap",
+        "detail": "ETH 2026-11-16T05:46:50.000Z < MST 2026-11-16T05:49:20.000Z, gap 2m 30s (minimum 60s)"
+      },
+      {
+        "id": "V09",
+        "ok": true,
+        "label": "both swaps have status Active (1)",
+        "detail": "MST Active (1), ETH Active (1)"
+      },
+      {
+        "id": "V10",
+        "ok": true,
+        "label": "both claim windows are still open",
+        "detail": "MST in 5m; ETH in 2m 30s"
+      },
+      {
+        "id": "V11",
+        "ok": true,
+        "label": "the two chains have distinct chain IDs",
+        "detail": "31337 vs 421614"
+      },
+      {
+        "id": "V12a",
+        "ok": true,
+        "label": "MST swap belongs to the configured ERC20HTLC",
+        "detail": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+      },
+      {
+        "id": "V12b",
+        "ok": true,
+        "label": "ETH swap belongs to the configured ETHHTLC",
+        "detail": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      },
+      {
+        "id": "V13",
+        "ok": true,
+        "label": "ERC20HTLC holds at least the locked MST amount",
+        "detail": "100.0 MST vs 100.0 MST"
+      },
+      {
+        "id": "V14",
+        "ok": true,
+        "label": "ETHHTLC holds at least the locked ETH amount",
+        "detail": "0.01 ETH vs 0.01 ETH"
+      },
+      {
+        "id": "V15ethereum",
+        "ok": true,
+        "label": "saved ethereum record matches on-chain state",
+        "detail": "0x237ea0798df881041de2578ac961f94516af3f11011078cad981f8842c3c2ba1"
+      },
+      {
+        "id": "V15arbitrum",
+        "ok": true,
+        "label": "saved arbitrum record matches on-chain state",
+        "detail": "0xf0fe6a4dd7c00801ae42d3b8594b5bc3286e4d254bbb3eb4941a892db838e72b"
+      }
+    ],
+    "negativeChecks": [],
+    "finalChecks": [
+      {
+        "id": "F01",
+        "ok": true,
+        "label": "both swaps are Claimed (2)",
+        "detail": "MST Claimed, ETH Claimed"
+      },
+      {
+        "id": "F02",
+        "ok": true,
+        "label": "MST moved from Alice to Bob exactly once",
+        "detail": "Alice -100000000000000000000, Bob +100000000000000000000"
+      },
+      {
+        "id": "F03",
+        "ok": true,
+        "label": "ERC20HTLC released exactly the locked MST amount",
+        "detail": "vault delta -100000000000000000000"
+      },
+      {
+        "id": "F04",
+        "ok": true,
+        "label": "ETHHTLC released exactly the locked ETH amount",
+        "detail": "vault delta -10000000000000000"
+      },
+      {
+        "id": "F05",
+        "ok": true,
+        "label": "both Claimed events reveal the same preimage matching the hashlock",
+        "detail": "secret fingerprint 35f759a59590"
+      }
+    ],
+    "balances": {
+      "initial": {
+        "ethereum": {
+          "mst": {
+            "decimals": 18,
+            "symbol": "MST",
+            "alice": "1000000000000000000000000",
+            "bob": "0",
+            "htlc": "0"
+          },
+          "native": {
+            "symbol": "ETH",
+            "alice": "10000000000000000000000",
+            "bob": "10000000000000000000000",
+            "htlc": "0"
+          }
+        },
+        "arbitrum": {
+          "native": {
+            "symbol": "ETH",
+            "alice": "10000000000000000000000",
+            "bob": "10000000000000000000000",
+            "htlc": "0"
+          }
+        }
+      },
+      "locked": {
+        "ethereum": {
+          "mst": {
+            "decimals": 18,
+            "symbol": "MST",
+            "alice": "999900000000000000000000",
+            "bob": "0",
+            "htlc": "100000000000000000000"
+          },
+          "native": {
+            "symbol": "ETH",
+            "alice": "9999999554997062488520",
+            "bob": "10000000000000000000000",
+            "htlc": "0"
+          }
+        },
+        "arbitrum": {
+          "native": {
+            "symbol": "ETH",
+            "alice": "10000000000000000000000",
+            "bob": "9999989670980769800598",
+            "htlc": "10000000000000000"
+          }
+        }
+      },
+      "final": {
+        "ethereum": {
+          "mst": {
+            "decimals": 18,
+            "symbol": "MST",
+            "alice": "999900000000000000000000",
+            "bob": "100000000000000000000",
+            "htlc": "0"
+          },
+          "native": {
+            "symbol": "ETH",
+            "alice": "9999999554997062488520",
+            "bob": "9999999894768351742000",
+            "htlc": "0"
+          }
+        },
+        "arbitrum": {
+          "native": {
+            "symbol": "ETH",
+            "alice": "10000009918481471443829",
+            "bob": "9999989670980769800598",
+            "htlc": "0"
+          }
+        }
+      }
+    }
+  },
+  "refund": {
+    "label": "local-refund-20261116-054418",
+    "scenario": "refund",
+    "network": "local",
+    "status": "completed",
+    "createdAt": "2026-11-16T05:44:20.954Z",
+    "updatedAt": "2026-11-16T05:44:22.079Z",
+    "hashlock": "0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1",
+    "secretFingerprint": "ae30be08afbe",
+    "parties": {
+      "alice": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+      "bob": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"
+    },
+    "amounts": {
+      "mst": "25000000000000000000",
+      "eth": "5000000000000000"
+    },
+    "humanAmounts": {
+      "mst": "25.0",
+      "eth": "0.005"
+    },
+    "timelocks": {
+      "base": 1794807860,
+      "mst": 1794807920,
+      "eth": 1794807890,
+      "mstSeconds": 60,
+      "ethSeconds": 30,
+      "gapSeconds": 30,
+      "minGapSeconds": 10
+    },
+    "swaps": {
+      "ethereum": {
+        "chain": "ethereum",
+        "swapId": "0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327",
+        "txHash": "0xbb201a4aae6320e41b120822028d55b1fa9edbab4d34a426a0793fbe71fe0d39",
+        "blockNumber": 8,
+        "sender": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        "recipient": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "token": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        "amount": "25000000000000000000",
+        "timelock": 1794807920
+      },
+      "arbitrum": {
+        "chain": "arbitrum",
+        "swapId": "0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247",
+        "txHash": "0x1938b3345c0e1b5f90daf14e1e3fa625ed2a981f36bfe3f1d234eb40f55353a9",
+        "blockNumber": 4,
+        "sender": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+        "recipient": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+        "token": "0x0000000000000000000000000000000000000000",
+        "amount": "5000000000000000",
+        "timelock": 1794807890
+      }
+    },
+    "approvals": {
+      "ethereum": {
+        "txHash": "0x87efe4b13c60d4f0297c25456769f52a171fdfb9453f1a293c787aa6f5c26e70",
+        "blockNumber": 7
+      }
+    },
+    "claims": {},
+    "refunds": {
+      "arbitrum": {
+        "txHash": "0x71c6159fe94e60b036807916c8b2769686eb694af903620c5ecbef86f2158451",
+        "blockNumber": 6
+      },
+      "ethereum": {
+        "txHash": "0xf5dfe4c5de1b1222c31fae15a9026d79e41d6d329bf4b8d85aa4eb6860de2135",
+        "blockNumber": 10
+      }
+    },
+    "checks": [
+      {
+        "id": "V01",
+        "ok": true,
+        "label": "both swaps exist",
+        "detail": "MST status 1, ETH status 1"
+      },
+      {
+        "id": "V02",
+        "ok": true,
+        "label": "both locks share the same hashlock",
+        "detail": "0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1 vs 0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1"
+      },
+      {
+        "id": "V03",
+        "ok": true,
+        "label": "keccak256(secret) equals the hashlock",
+        "detail": "0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1"
+      },
+      {
+        "id": "V04",
+        "ok": true,
+        "label": "MST lock uses the configured MST token",
+        "detail": "0x5FbDB2315678afecb367f032d93F642f64180aa3 vs 0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      },
+      {
+        "id": "V05",
+        "ok": true,
+        "label": "ETH lock uses address(0) as the asset marker",
+        "detail": "0x0000000000000000000000000000000000000000"
+      },
+      {
+        "id": "V06",
+        "ok": true,
+        "label": "participants are mirrored across chains",
+        "detail": "MST 0x70997970C51812dc3A010C7d01b50e0d17dc79C8->0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC; ETH 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC->0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+      },
+      {
+        "id": "V07a",
+        "ok": true,
+        "label": "MST amount matches the scenario",
+        "detail": "25.0 MST (expected 25.0 MST)"
+      },
+      {
+        "id": "V07b",
+        "ok": true,
+        "label": "ETH amount matches the scenario",
+        "detail": "0.005 ETH (expected 0.005 ETH)"
+      },
+      {
+        "id": "V08",
+        "ok": true,
+        "label": "T_ETH < T_MST with the configured safety gap",
+        "detail": "ETH 2026-11-16T05:44:50.000Z < MST 2026-11-16T05:45:20.000Z, gap 30s (minimum 10s)"
+      },
+      {
+        "id": "V09",
+        "ok": true,
+        "label": "both swaps have status Active (1)",
+        "detail": "MST Active (1), ETH Active (1)"
+      },
+      {
+        "id": "V10",
+        "ok": true,
+        "label": "both claim windows are still open",
+        "detail": "MST in 59s; ETH in 29s"
+      },
+      {
+        "id": "V11",
+        "ok": true,
+        "label": "the two chains have distinct chain IDs",
+        "detail": "31337 vs 421614"
+      },
+      {
+        "id": "V12a",
+        "ok": true,
+        "label": "MST swap belongs to the configured ERC20HTLC",
+        "detail": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+      },
+      {
+        "id": "V12b",
+        "ok": true,
+        "label": "ETH swap belongs to the configured ETHHTLC",
+        "detail": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      },
+      {
+        "id": "V13",
+        "ok": true,
+        "label": "ERC20HTLC holds at least the locked MST amount",
+        "detail": "25.0 MST vs 25.0 MST"
+      },
+      {
+        "id": "V14",
+        "ok": true,
+        "label": "ETHHTLC holds at least the locked ETH amount",
+        "detail": "0.005 ETH vs 0.005 ETH"
+      },
+      {
+        "id": "V15ethereum",
+        "ok": true,
+        "label": "saved ethereum record matches on-chain state",
+        "detail": "0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327"
+      },
+      {
+        "id": "V15arbitrum",
+        "ok": true,
+        "label": "saved arbitrum record matches on-chain state",
+        "detail": "0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247"
+      }
+    ],
+    "negativeChecks": [
+      {
+        "ok": true,
+        "name": "SwapNotExpired",
+        "detail": "SwapNotExpired(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247) — The timelock has not passed yet; a refund is only allowed at/after expiry."
+      },
+      {
+        "ok": true,
+        "name": "InvalidSecret",
+        "detail": "InvalidSecret(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247) — The secret does not match keccak256(abi.encodePacked(secret))."
+      },
+      {
+        "ok": true,
+        "name": "UnauthorizedReceiver",
+        "detail": "UnauthorizedReceiver(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247, 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC) — Only the recorded recipient can claim this swap."
+      },
+      {
+        "ok": true,
+        "name": "UnauthorizedSender",
+        "detail": "UnauthorizedSender(0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327, 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC) — Only the original sender can refund this swap."
+      },
+      {
+        "ok": true,
+        "name": "UnauthorizedReceiver",
+        "detail": "UnauthorizedReceiver(0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327, 0x70997970C51812dc3A010C7d01b50e0d17dc79C8) — Only the recorded recipient can claim this swap."
+      },
+      {
+        "id": "N06",
+        "ok": true,
+        "label": "negative calls left both swaps Active",
+        "detail": "MST Active, ETH Active"
+      },
+      {
+        "id": "N07",
+        "ok": true,
+        "name": "SwapExpired",
+        "detail": "SwapExpired(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247) — The claim window has closed; the sender may refund at/after the timelock.",
+        "label": "ETH claim after expiry is rejected"
+      },
+      {
+        "id": "N08",
+        "ok": true,
+        "name": "SwapExpired",
+        "detail": "SwapExpired(0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327) — The claim window has closed; the sender may refund at/after the timelock.",
+        "label": "MST claim after expiry is rejected"
+      }
+    ],
+    "finalChecks": [
+      {
+        "id": "R01",
+        "ok": true,
+        "label": "both swaps are Refunded (3)",
+        "detail": "MST Refunded, ETH Refunded"
+      },
+      {
+        "id": "R02",
+        "ok": true,
+        "label": "Alice recovered the full MST amount after the lock",
+        "detail": "Alice delta 25000000000000000000"
+      },
+      {
+        "id": "R03",
+        "ok": true,
+        "label": "ERC20HTLC released the locked MST amount",
+        "detail": "vault delta -25000000000000000000"
+      },
+      {
+        "id": "R04",
+        "ok": true,
+        "label": "ETHHTLC released the locked ETH amount",
+        "detail": "vault delta -5000000000000000"
+      },
+      {
+        "id": "R05",
+        "ok": true,
+        "label": "no claim was recorded in the recovery scenario",
+        "detail": "both assets returned through refund()"
+      }
+    ],
+    "balances": {
+      "initial": {
+        "ethereum": {
+          "mst": {
+            "decimals": 18,
+            "symbol": "MST",
+            "alice": "999900000000000000000000",
+            "bob": "100000000000000000000",
+            "htlc": "0"
+          },
+          "native": {
+            "symbol": "ETH",
+            "alice": "9999999554997062488520",
+            "bob": "9999999894768351742000",
+            "htlc": "0"
+          }
+        },
+        "arbitrum": {
+          "native": {
+            "symbol": "ETH",
+            "alice": "10000009918481471443829",
+            "bob": "9999989670980769800598",
+            "htlc": "0"
+          }
+        }
+      },
+      "locked": {
+        "ethereum": {
+          "mst": {
+            "decimals": 18,
+            "symbol": "MST",
+            "alice": "999875000000000000000000",
+            "bob": "100000000000000000000",
+            "htlc": "25000000000000000000"
+          },
+          "native": {
+            "symbol": "ETH",
+            "alice": "9999999183814429157512",
+            "bob": "9999999894768351742000",
+            "htlc": "0"
+          }
+        },
+        "arbitrum": {
+          "native": {
+            "symbol": "ETH",
+            "alice": "10000009918481471443829",
+            "bob": "9999984402579051911023",
+            "htlc": "5000000000000000"
+          }
+        }
+      },
+      "final": {
+        "ethereum": {
+          "mst": {
+            "decimals": 18,
+            "symbol": "MST",
+            "alice": "999900000000000000000000",
+            "bob": "100000000000000000000",
+            "htlc": "0"
+          },
+          "native": {
+            "symbol": "ETH",
+            "alice": "9999999118313369232608",
+            "bob": "9999999894768351742000",
+            "htlc": "0"
+          }
+        },
+        "arbitrum": {
+          "native": {
+            "symbol": "ETH",
+            "alice": "10000009918481471443829",
+            "bob": "9999989337019352459988",
+            "htlc": "0"
+          }
+        }
+      }
+    }
+  }
+}

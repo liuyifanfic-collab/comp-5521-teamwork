@@ -8,3 +8,8 @@ coverage.json
 !.env.example
 *.log
 .DS_Store
+
+# D role runtime state
+.runtime/
+.home/
+deployments/local.json

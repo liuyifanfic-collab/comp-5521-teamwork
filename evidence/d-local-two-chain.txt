@@ -1,0 +1,281 @@
+
+> comp5521-htlc-teamwork@1.0.0 local:demo
+> node scripts/local-demo.js
+
+
+=== Local two-chain rehearsal ===
+  workspace: /Users/hechang/Desktop/comp-5521-teamwork-main 2
+  node: v24.21.0
+  evidence: evidence/d-local-two-chain.json
+  Ethereum local node starting on http://127.0.0.1:8545 (chain 31337, pid 31431)
+  [ok] Ethereum local ready: chain 31337, block 0
+  Arbitrum local node starting on http://127.0.0.1:8546 (chain 421614, pid 31432)
+  [ok] Arbitrum local ready: chain 421614, block 0
+
+=== Deploy contracts ===
+
+=== Deploy MySimpleToken (official Lab 3 MST) to Ethereum local ===
+  deployer: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  bytecode source: /Users/hechang/Desktop/comp-5521-teamwork-main 2/artifacts/contracts/MySimpleToken.sol/MySimpleToken.json
+  bytecode sha256: 3673cf1e14c05a6dacf43feba1c1d2d44d894d1810cb16e32346927622b5616d
+[2026-11-16T05:44:19.737Z] Deploy MySimpleToken: submitting transaction on Ethereum local
+  tx hash: 0x433af945d0bb02938db10081d51cc701ece1600395cf9e693106d178893c5924
+  [ok] Deploy MySimpleToken confirmed in block 1, gas 1112534
+[2026-11-16T05:44:19.775Z] Mint MST: 1000000.0 MST to 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+[2026-11-16T05:44:19.775Z] Mint MySimpleToken: submitting transaction on Ethereum local
+  tx hash: 0xef6fad76ca69e2b0376dff7c03092e0a8d9bf7141703aa6cae2b4c366a848e7a
+  [ok] Mint MySimpleToken confirmed in block 2, gas 71334
+  [ok] MySimpleToken deployed at 0x5FbDB2315678afecb367f032d93F642f64180aa3
+  MST_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
+
+=== Deploy ERC20HTLC to Ethereum local ===
+  deployer: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  bytecode source: /Users/hechang/Desktop/comp-5521-teamwork-main 2/abi/ERC20HTLC.bytecode.txt
+  bytecode sha256: ed7b1348f99d51197ec06e04fb54cc1354bea595521525eb8e31f420210796f3
+[2026-11-16T05:44:19.899Z] Deploy ERC20HTLC: submitting transaction on Ethereum local
+  tx hash: 0xf04421f3343ab17b9e53489ea3d273e0f50cbfbcdb670278df2f741f083595b8
+  [ok] Deploy ERC20HTLC confirmed in block 3, gas 1175191
+  [ok] ERC20HTLC deployed at 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+
+=== Deploy ETHHTLC to Arbitrum local ===
+  deployer: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  bytecode source: /Users/hechang/Desktop/comp-5521-teamwork-main 2/abi/ETHHTLC.bytecode.txt
+  bytecode sha256: 0592c394670fb535c2f14a4d62d695b1be041f222baf86345e272a6c7f890b45
+[2026-11-16T05:44:20.021Z] Deploy ETHHTLC: submitting transaction on Arbitrum local
+  tx hash: 0x2bfcf6ff916152601736d751f0dc6ef97e851c4772f2460c8ab269068f663123
+  [ok] Deploy ETHHTLC confirmed in block 1, gas 1068328
+  [ok] ETHHTLC deployed at 0x5FbDB2315678afecb367f032d93F642f64180aa3
+
+=== Deployment summary ===
+  MST:        0x5FbDB2315678afecb367f032d93F642f64180aa3
+  Ethereum local: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0 (ERC20HTLC)
+  Arbitrum local: 0x5FbDB2315678afecb367f032d93F642f64180aa3 (ETHHTLC)
+  saved to .runtime/local/deployments.json
+
+=== Scenario 1/2: successful atomic swap ===
+
+=== Cross-chain success flow: local-success-20261116-054418 ===
+  hashlock: 0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e
+  secret fingerprint: 35f759a59590 (the full preimage stays in the 0600 state file until the claim reveals it)
+
+=== Preflight ===
+  account  Ethereum Sepolia ETH  Arbitrum Sepolia ETH  MST
+  -------  --------------------  --------------------  -------------
+  Alice    10000.0               10000.0               1000000.0 MST
+  Bob      10000.0               10000.0               -
+  MST allowance: 0.0 MST (auto-approve will top it up if needed)
+  lock amounts: 100.0 MST / 0.01 ETH
+  timelocks: ETH +150s < MST +300s (safety gap 60s)
+  planned timelocks: ETH 2026-11-16T05:46:50.000Z (T2), MST 2026-11-16T05:49:20.000Z (T1), gap 2m 30s
+
+=== Step 1: lock MST on Ethereum Sepolia ===
+  Alice 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 locks MST for Bob 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+[2026-11-16T05:44:20.293Z] Approving MST: 100.0 MST for 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+[2026-11-16T05:44:20.293Z] Approve MST: submitting transaction on Ethereum local
+  tx hash: 0xd76f536a799467e8e481fdaa4db67293f50b36d411a9636c8893c4563ec53754
+  [ok] Approve MST confirmed in block 4, gas 46964
+[2026-11-16T05:44:20.369Z] Lock MST: submitting transaction on Ethereum local
+  tx hash: 0xf8ba83dc0aa5d9e5cc943ce72ff85bc1c00cf0d0f8fc243f3fdad22ca21b0bc7
+  [ok] Lock MST confirmed in block 5, gas 243744
+  [ok] MST locked: swapId 0x237ea0798df881041de2578ac961f94516af3f11011078cad981f8842c3c2ba1, amount 100.0 MST, timelock 2026-11-16T05:49:20.000Z
+
+=== Step 2: lock ETH on Arbitrum Sepolia ===
+  Bob 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC locks ETH for Alice 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 with T_ETH < T_MST
+[2026-11-16T05:44:20.504Z] Lock ETH: submitting transaction on Arbitrum local
+  tx hash: 0xa63d0d994b248efb4b49074161604618c13e7b57e0e32097d7d9eb1f458d5975
+  [ok] Lock ETH confirmed in block 2, gas 185937
+  [ok] ETH locked: swapId 0xf0fe6a4dd7c00801ae42d3b8594b5bc3286e4d254bbb3eb4941a892db838e72b, amount 0.01 ETH, timelock 2026-11-16T05:46:50.000Z
+
+=== Cross-chain verification ===
+  [ok] V01 both swaps exist — MST status 1, ETH status 1
+  [ok] V02 both locks share the same hashlock — 0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e vs 0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e
+  [ok] V03 keccak256(secret) equals the hashlock — 0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e
+  [ok] V04 MST lock uses the configured MST token — 0x5FbDB2315678afecb367f032d93F642f64180aa3 vs 0x5FbDB2315678afecb367f032d93F642f64180aa3
+  [ok] V05 ETH lock uses address(0) as the asset marker — 0x0000000000000000000000000000000000000000
+  [ok] V06 participants are mirrored across chains — MST 0x70997970C51812dc3A010C7d01b50e0d17dc79C8->0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC; ETH 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC->0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+  [ok] V07a MST amount matches the scenario — 100.0 MST (expected 100.0 MST)
+  [ok] V07b ETH amount matches the scenario — 0.01 ETH (expected 0.01 ETH)
+  [ok] V08 T_ETH < T_MST with the configured safety gap — ETH 2026-11-16T05:46:50.000Z < MST 2026-11-16T05:49:20.000Z, gap 2m 30s (minimum 60s)
+  [ok] V09 both swaps have status Active (1) — MST Active (1), ETH Active (1)
+  [ok] V10 both claim windows are still open — MST in 5m; ETH in 2m 30s
+  [ok] V11 the two chains have distinct chain IDs — 31337 vs 421614
+  [ok] V12a MST swap belongs to the configured ERC20HTLC — 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+  [ok] V12b ETH swap belongs to the configured ETHHTLC — 0x5FbDB2315678afecb367f032d93F642f64180aa3
+  [ok] V13 ERC20HTLC holds at least the locked MST amount — 100.0 MST vs 100.0 MST
+  [ok] V14 ETHHTLC holds at least the locked ETH amount — 0.01 ETH vs 0.01 ETH
+  [ok] V15ethereum saved ethereum record matches on-chain state — 0x237ea0798df881041de2578ac961f94516af3f11011078cad981f8842c3c2ba1
+  [ok] V15arbitrum saved arbitrum record matches on-chain state — 0xf0fe6a4dd7c00801ae42d3b8594b5bc3286e4d254bbb3eb4941a892db838e72b
+  overall: PASS
+
+=== Step 3: Alice claims ETH on Arbitrum Sepolia ===
+[2026-11-16T05:44:20.710Z] Claim ETH: submitting transaction on Arbitrum local
+  tx hash: 0x2ad6d2800f845dfadf1ca6820ab80f8b563fcb0947d83155fba7bbe0f49bb980
+  [ok] Claim ETH confirmed in block 3, gas 48699
+  [ok] Claim complete on Arbitrum local; secret revealed by the Claimed event
+
+=== Step 4: Bob claims MST on Ethereum Sepolia ===
+[2026-11-16T05:44:20.825Z] Claim MST: submitting transaction on Ethereum local
+  tx hash: 0x776185297ee99a4a6a7e0734003d331552152dcc1edf26901d69034dd788e496
+  [ok] Claim MST confirmed in block 6, gas 72350
+  [ok] Claim complete on Ethereum local; secret revealed by the Claimed event
+
+=== Final state ===
+  [ok] F01 both swaps are Claimed (2) — MST Claimed, ETH Claimed
+  [ok] F02 MST moved from Alice to Bob exactly once — Alice -100000000000000000000, Bob +100000000000000000000
+  [ok] F03 ERC20HTLC released exactly the locked MST amount — vault delta -100000000000000000000
+  [ok] F04 ETHHTLC released exactly the locked ETH amount — vault delta -10000000000000000
+  [ok] F05 both Claimed events reveal the same preimage matching the hashlock — secret fingerprint 35f759a59590
+  asset            account  initial    locked                   final                     net (initial->final)   release (locked->final)
+  ---------------  -------  ---------  -----------------------  ------------------------  ---------------------  -----------------------
+  MST              alice    1000000.0  999900.0                 999900.0                  -100.0                 0.0
+  MST              bob      0.0        0.0                      100.0                     100.0                  100.0
+  MST              htlc     0.0        100.0                    0.0                       0.0                    -100.0
+  ETH Sepolia ETH  alice    10000.0    9999.99955499706248852   9999.99955499706248852    -0.00044500293751148   0.0
+  ETH Sepolia ETH  bob      10000.0    10000.0                  9999.999894768351742      -0.000105231648258     -0.000105231648258
+  ETH Sepolia ETH  htlc     0.0        0.0                      0.0                       0.0                    0.0
+  Arb Sepolia ETH  alice    10000.0    10000.0                  10000.009918481471443829  0.009918481471443829   0.009918481471443829
+  Arb Sepolia ETH  bob      10000.0    9999.989670980769800598  9999.989670980769800598   -0.010329019230199402  0.0
+  Arb Sepolia ETH  htlc     0.0        0.01                     0.0                       0.0                    -0.01
+  [ok] success flow final checks: PASS
+
+=== Transaction summary ===
+  step         chain           tx hash                                                             explorer
+  -----------  --------------  ------------------------------------------------------------------  --------
+  approve MST  Ethereum local  0xd76f536a799467e8e481fdaa4db67293f50b36d411a9636c8893c4563ec53754  (local)
+  lock MST     Ethereum local  0xf8ba83dc0aa5d9e5cc943ce72ff85bc1c00cf0d0f8fc243f3fdad22ca21b0bc7  (local)
+  lock ETH     Arbitrum local  0xa63d0d994b248efb4b49074161604618c13e7b57e0e32097d7d9eb1f458d5975  (local)
+  claim ETH    Arbitrum local  0x2ad6d2800f845dfadf1ca6820ab80f8b563fcb0947d83155fba7bbe0f49bb980  (local)
+  claim MST    Ethereum local  0x776185297ee99a4a6a7e0734003d331552152dcc1edf26901d69034dd788e496  (local)
+
+=== Outcome ===
+  label: local-success-20261116-054418
+  status: completed
+  hashlock: 0xab1225df5ee92cfa1aaacf295c3fba176d2ba8355f353c320a843477cfdf6a2e
+  ETH timelock: 2026-11-16T05:46:50.000Z | MST timelock: 2026-11-16T05:49:20.000Z
+  ETH claimed by Alice; secret revealed on Arbitrum Sepolia
+  MST claimed by Bob; atomic swap complete
+  state file: .runtime/swaps/local-success-20261116-054418.json
+
+=== Scenario 2/2: timeout recovery ===
+
+=== Cross-chain timeout-recovery flow: local-refund-20261116-054418 ===
+  hashlock: 0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1
+  secret fingerprint: ae30be08afbe
+
+=== Preflight ===
+  account  Ethereum Sepolia ETH    Arbitrum Sepolia ETH      MST
+  -------  ----------------------  ------------------------  ------------
+  Alice    9999.99955499706248852  10000.009918481471443829  999900.0 MST
+  Bob      9999.999894768351742    9999.989670980769800598   -
+  MST allowance: 0.0 MST (auto-approve will top it up if needed)
+  lock amounts: 25.0 MST / 0.005 ETH
+  timelocks: ETH +30s < MST +60s (safety gap 10s)
+  planned timelocks: ETH 2026-11-16T05:44:50.000Z (T2), MST 2026-11-16T05:45:20.000Z (T1), gap 30s
+
+=== Step 1: lock MST on Ethereum Sepolia ===
+[2026-11-16T05:44:21.165Z] Approving MST: 25.0 MST for 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+[2026-11-16T05:44:21.165Z] Approve MST: submitting transaction on Ethereum local
+  tx hash: 0x87efe4b13c60d4f0297c25456769f52a171fdfb9453f1a293c787aa6f5c26e70
+  [ok] Approve MST confirmed in block 7, gas 46964
+[2026-11-16T05:44:21.241Z] Lock MST: submitting transaction on Ethereum local
+  tx hash: 0xbb201a4aae6320e41b120822028d55b1fa9edbab4d34a426a0793fbe71fe0d39
+  [ok] Lock MST confirmed in block 8, gas 226632
+  [ok] MST locked: swapId 0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327, amount 25.0 MST, timelock 2026-11-16T05:45:20.000Z
+
+=== Step 2: lock ETH on Arbitrum Sepolia ===
+[2026-11-16T05:44:21.368Z] Lock ETH: submitting transaction on Arbitrum local
+  tx hash: 0x1938b3345c0e1b5f90daf14e1e3fa625ed2a981f36bfe3f1d234eb40f55353a9
+  [ok] Lock ETH confirmed in block 4, gas 168825
+  [ok] ETH locked: swapId 0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247, amount 0.005 ETH, timelock 2026-11-16T05:44:50.000Z
+
+=== Cross-chain verification ===
+  [ok] V01 both swaps exist — MST status 1, ETH status 1
+  [ok] V02 both locks share the same hashlock — 0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1 vs 0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1
+  [ok] V03 keccak256(secret) equals the hashlock — 0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1
+  [ok] V04 MST lock uses the configured MST token — 0x5FbDB2315678afecb367f032d93F642f64180aa3 vs 0x5FbDB2315678afecb367f032d93F642f64180aa3
+  [ok] V05 ETH lock uses address(0) as the asset marker — 0x0000000000000000000000000000000000000000
+  [ok] V06 participants are mirrored across chains — MST 0x70997970C51812dc3A010C7d01b50e0d17dc79C8->0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC; ETH 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC->0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+  [ok] V07a MST amount matches the scenario — 25.0 MST (expected 25.0 MST)
+  [ok] V07b ETH amount matches the scenario — 0.005 ETH (expected 0.005 ETH)
+  [ok] V08 T_ETH < T_MST with the configured safety gap — ETH 2026-11-16T05:44:50.000Z < MST 2026-11-16T05:45:20.000Z, gap 30s (minimum 10s)
+  [ok] V09 both swaps have status Active (1) — MST Active (1), ETH Active (1)
+  [ok] V10 both claim windows are still open — MST in 59s; ETH in 29s
+  [ok] V11 the two chains have distinct chain IDs — 31337 vs 421614
+  [ok] V12a MST swap belongs to the configured ERC20HTLC — 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+  [ok] V12b ETH swap belongs to the configured ETHHTLC — 0x5FbDB2315678afecb367f032d93F642f64180aa3
+  [ok] V13 ERC20HTLC holds at least the locked MST amount — 25.0 MST vs 25.0 MST
+  [ok] V14 ETHHTLC holds at least the locked ETH amount — 0.005 ETH vs 0.005 ETH
+  [ok] V15ethereum saved ethereum record matches on-chain state — 0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327
+  [ok] V15arbitrum saved arbitrum record matches on-chain state — 0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247
+  overall: PASS
+
+=== Negative checks before expiry (read-only eth_call) ===
+  [ok] ETH refund before expiry (Bob): reverted as expected -> SwapNotExpired(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247) — The timelock has not passed yet; a refund is only allowed at/after expiry.
+  [ok] ETH claim with a wrong secret (Alice): reverted as expected -> InvalidSecret(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247) — The secret does not match keccak256(abi.encodePacked(secret)).
+  [ok] ETH claim by the sender, not the recipient (Bob): reverted as expected -> UnauthorizedReceiver(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247, 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC) — Only the recorded recipient can claim this swap.
+  [ok] MST refund by the recipient, not the sender (Bob): reverted as expected -> UnauthorizedSender(0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327, 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC) — Only the original sender can refund this swap.
+  [ok] MST claim by the sender, not the recipient (Alice): reverted as expected -> UnauthorizedReceiver(0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327, 0x70997970C51812dc3A010C7d01b50e0d17dc79C8) — Only the recorded recipient can claim this swap.
+  [ok] negative checks: PASS
+
+=== Step 3: wait for T_ETH, then refund ETH ===
+[2026-11-16T05:44:21.660Z] Fast-forwarding local chain: Arbitrum local +30s (test-only)
+  [ok] chain time is now 2026-11-16T05:44:51.000Z
+  [ok] ETH claim after expiry (Alice): reverted as expected -> SwapExpired(0xcca185a33cf75750e1010c48dcc28584cd046471c4d2bda7677e306492a44247) — The claim window has closed; the sender may refund at/after the timelock.
+[2026-11-16T05:44:21.758Z] Refund ETH: submitting transaction on Arbitrum local
+  tx hash: 0x71c6159fe94e60b036807916c8b2769686eb694af903620c5ecbef86f2158451
+  [ok] Refund ETH confirmed in block 6, gas 45153
+  [ok] Refund complete on Arbitrum local
+
+=== Step 4: wait for T_MST, then refund MST ===
+[2026-11-16T05:44:21.860Z] Fast-forwarding local chain: Ethereum local +60s (test-only)
+  [ok] chain time is now 2026-11-16T05:45:21.000Z
+  [ok] MST claim after expiry (Bob): reverted as expected -> SwapExpired(0xb9f548f1600dd8546796cefd3ea909c33b2320cc47bfb90d89f1e1e67fd77327) — The claim window has closed; the sender may refund at/after the timelock.
+[2026-11-16T05:44:21.959Z] Refund MST: submitting transaction on Ethereum local
+  tx hash: 0xf5dfe4c5de1b1222c31fae15a9026d79e41d6d329bf4b8d85aa4eb6860de2135
+  [ok] Refund MST confirmed in block 10, gas 51704
+  [ok] Refund complete on Ethereum local
+
+=== Final state ===
+  [ok] R01 both swaps are Refunded (3) — MST Refunded, ETH Refunded
+  [ok] R02 Alice recovered the full MST amount after the lock — Alice delta 25000000000000000000
+  [ok] R03 ERC20HTLC released the locked MST amount — vault delta -25000000000000000000
+  [ok] R04 ETHHTLC released the locked ETH amount — vault delta -5000000000000000
+  [ok] R05 no claim was recorded in the recovery scenario — both assets returned through refund()
+  asset            account  initial                   locked                    final                     net (initial->final)   release (locked->final)
+  ---------------  -------  ------------------------  ------------------------  ------------------------  ---------------------  -----------------------
+  MST              alice    999900.0                  999875.0                  999900.0                  0.0                    25.0
+  MST              bob      100.0                     100.0                     100.0                     0.0                    0.0
+  MST              htlc     0.0                       25.0                      0.0                       0.0                    -25.0
+  ETH Sepolia ETH  alice    9999.99955499706248852    9999.999183814429157512   9999.999118313369232608   -0.000436683693255912  -0.000065501059924904
+  ETH Sepolia ETH  bob      9999.999894768351742      9999.999894768351742      9999.999894768351742      0.0                    0.0
+  ETH Sepolia ETH  htlc     0.0                       0.0                       0.0                       0.0                    0.0
+  Arb Sepolia ETH  alice    10000.009918481471443829  10000.009918481471443829  10000.009918481471443829  0.0                    0.0
+  Arb Sepolia ETH  bob      9999.989670980769800598   9999.984402579051911023   9999.989337019352459988   -0.00033396141734061   0.004934440300548965
+  Arb Sepolia ETH  htlc     0.0                       0.005                     0.0                       0.0                    -0.005
+  [ok] recovery flow final checks: PASS
+
+=== Transaction summary ===
+  step         chain           tx hash                                                             explorer
+  -----------  --------------  ------------------------------------------------------------------  --------
+  approve MST  Ethereum local  0x87efe4b13c60d4f0297c25456769f52a171fdfb9453f1a293c787aa6f5c26e70  (local)
+  lock MST     Ethereum local  0xbb201a4aae6320e41b120822028d55b1fa9edbab4d34a426a0793fbe71fe0d39  (local)
+  lock ETH     Arbitrum local  0x1938b3345c0e1b5f90daf14e1e3fa625ed2a981f36bfe3f1d234eb40f55353a9  (local)
+  refund ETH   Arbitrum local  0x71c6159fe94e60b036807916c8b2769686eb694af903620c5ecbef86f2158451  (local)
+  refund MST   Ethereum local  0xf5dfe4c5de1b1222c31fae15a9026d79e41d6d329bf4b8d85aa4eb6860de2135  (local)
+
+=== Outcome ===
+  label: local-refund-20261116-054418
+  status: completed
+  hashlock: 0xd0e50700b37a226248d440a3fb69cba3136cbc5605e47d91fe5fe486686a40a1
+  ETH timelock: 2026-11-16T05:44:50.000Z | MST timelock: 2026-11-16T05:45:20.000Z
+  ETH refunded to Bob
+  MST refunded to Alice
+  state file: .runtime/swaps/local-refund-20261116-054418.json
+
+=== Local rehearsal complete ===
+  [ok] success scenario: PASS
+  [ok] timeout-recovery scenario: PASS
+  evidence JSON: evidence/d-local-two-chain.json
+  Nodes are stopped after the run. Rerun with --keep-nodes to inspect them with manual commands.
+  stopped ethereum node (pid 31431)
+  stopped arbitrum node (pid 31432)

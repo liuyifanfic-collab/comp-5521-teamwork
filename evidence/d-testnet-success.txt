@@ -1,0 +1,106 @@
+
+> comp5521-htlc-teamwork@1.0.0 swap:success
+> node scripts/cli.js success --label demo-success
+
+
+=== Cross-chain success flow: demo-success ===
+  hashlock: 0xe6ed2bcaa88645f045ace7a16df43fb45f17a2b3ef0f2fbea5c0e453fbc324ed
+  secret fingerprint: 7550c6897140 (the full preimage stays in the 0600 state file until the claim reveals it)
+
+=== Preflight ===
+  account  Ethereum Sepolia ETH  Arbitrum Sepolia ETH  MST
+  -------  --------------------  --------------------  -------------
+  Alice    0.105972120692962228  0.0099815420059816    1000000.0 MST
+  Bob      0.039702101676566034  0.0100028813200952    -
+  MST allowance: 0.0 MST (auto-approve will top it up if needed)
+  lock amounts: 100.0 MST / 0.005 ETH
+  timelocks: ETH +900s < MST +1800s (safety gap 300s)
+  planned timelocks: ETH 2026-11-16T09:09:10.000Z (T2), MST 2026-11-16T09:24:10.000Z (T1), gap 15m
+
+=== Step 1: lock MST on Ethereum Sepolia ===
+  Alice 0x8D28660Ab655daB2a283F306583292c10c590009 locks MST for Bob 0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc
+[2026-11-16T08:54:12.259Z] Approving MST: 100.0 MST for 0xE1e8D859eA93841081f982f1d65a73640848E701
+[2026-11-16T08:54:12.259Z] Approve MST: submitting transaction on Ethereum Sepolia
+  tx hash: 0x4cf05d37becba531963b809fd9fd5ddaa01623579330e016e7067516f6fbf592  https://sepolia.etherscan.io/tx/0x4cf05d37becba531963b809fd9fd5ddaa01623579330e016e7067516f6fbf592
+  [ok] Approve MST confirmed in block 12146275, gas 128884
+[2026-11-16T08:54:26.795Z] Lock MST: submitting transaction on Ethereum Sepolia
+  tx hash: 0x8b36a532b746b06daa2ccccd5b45727f304d5d0c4b671bb0ce847c51baba4ae3  https://sepolia.etherscan.io/tx/0x8b36a532b746b06daa2ccccd5b45727f304d5d0c4b671bb0ce847c51baba4ae3
+  [ok] Lock MST confirmed in block 12146276, gas 1037620
+  [ok] MST locked: swapId 0x07d4bec199573dfc945da67dae288249285cddee151fe613a6eab80fc12016bf, amount 100.0 MST, timelock 2026-11-16T09:24:10.000Z
+
+=== Step 2: lock ETH on Arbitrum Sepolia ===
+  Bob 0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc locks ETH for Alice 0x8D28660Ab655daB2a283F306583292c10c590009 with T_ETH < T_MST
+[2026-11-16T08:54:43.276Z] Lock ETH: submitting transaction on Arbitrum Sepolia
+  tx hash: 0xb240ec7b387123804d73f5a77cdb1de33fcf2b86559aaa5c8260371e43ed20cf  https://sepolia.arbiscan.io/tx/0xb240ec7b387123804d73f5a77cdb1de33fcf2b86559aaa5c8260371e43ed20cf
+  [ok] Lock ETH confirmed in block 329731776, gas 185925
+  [ok] ETH locked: swapId 0xc2621bb94e961eafd3ba4635fd6cbc3182a155e3f386546d65d2f3233c5dff2b, amount 0.005 ETH, timelock 2026-11-16T09:09:10.000Z
+
+=== Cross-chain verification ===
+  [ok] V01 both swaps exist — MST status 1, ETH status 1
+  [ok] V02 both locks share the same hashlock — 0xe6ed2bcaa88645f045ace7a16df43fb45f17a2b3ef0f2fbea5c0e453fbc324ed vs 0xe6ed2bcaa88645f045ace7a16df43fb45f17a2b3ef0f2fbea5c0e453fbc324ed
+  [ok] V03 keccak256(secret) equals the hashlock — 0xe6ed2bcaa88645f045ace7a16df43fb45f17a2b3ef0f2fbea5c0e453fbc324ed
+  [ok] V04 MST lock uses the configured MST token — 0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2 vs 0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2
+  [ok] V05 ETH lock uses address(0) as the asset marker — 0x0000000000000000000000000000000000000000
+  [ok] V06 participants are mirrored across chains — MST 0x8D28660Ab655daB2a283F306583292c10c590009->0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc; ETH 0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc->0x8D28660Ab655daB2a283F306583292c10c590009
+  [ok] V07a MST amount matches the scenario — 100.0 MST (expected 100.0 MST)
+  [ok] V07b ETH amount matches the scenario — 0.005 ETH (expected 0.005 ETH)
+  [ok] V08 T_ETH < T_MST with the configured safety gap — ETH 2026-11-16T09:09:10.000Z < MST 2026-11-16T09:24:10.000Z, gap 15m (minimum 300s)
+  [ok] V09 both swaps have status Active (1) — MST Active (1), ETH Active (1)
+  [ok] V10 both claim windows are still open — MST in 29m 34s; ETH in 14m 25s
+  [ok] V11 the two chains have distinct chain IDs — 11155111 vs 421614
+  [ok] V12a MST swap belongs to the configured ERC20HTLC — 0xE1e8D859eA93841081f982f1d65a73640848E701
+  [ok] V12b ETH swap belongs to the configured ETHHTLC — 0x3E02C553F3Dac38267f005eEB19cb959be53fF0D
+  [ok] V13 ERC20HTLC holds at least the locked MST amount — 100.0 MST vs 100.0 MST
+  [ok] V14 ETHHTLC holds at least the locked ETH amount — 0.005 ETH vs 0.005 ETH
+  [ok] V15ethereum saved ethereum record matches on-chain state — 0x07d4bec199573dfc945da67dae288249285cddee151fe613a6eab80fc12016bf
+  [ok] V15arbitrum saved arbitrum record matches on-chain state — 0xc2621bb94e961eafd3ba4635fd6cbc3182a155e3f386546d65d2f3233c5dff2b
+  overall: PASS
+
+=== Step 3: Alice claims ETH on Arbitrum Sepolia ===
+[2026-11-16T08:54:47.963Z] Claim ETH: submitting transaction on Arbitrum Sepolia
+  tx hash: 0x93bf8eb237609d2e21e54d504af20ffcbd95ea8a815305a53971cfa1e0e19401  https://sepolia.arbiscan.io/tx/0x93bf8eb237609d2e21e54d504af20ffcbd95ea8a815305a53971cfa1e0e19401
+  [ok] Claim ETH confirmed in block 329731795, gas 48699
+  [ok] Claim complete on Arbitrum Sepolia; secret revealed by the Claimed event
+
+=== Step 4: Bob claims MST on Ethereum Sepolia ===
+[2026-11-16T08:54:50.581Z] Claim MST: submitting transaction on Ethereum Sepolia
+  tx hash: 0x2ab34ce1bde8cb5479d062e4547593a2bcb12f2237cd38a696121bcf691f2d2d  https://sepolia.etherscan.io/tx/0x2ab34ce1bde8cb5479d062e4547593a2bcb12f2237cd38a696121bcf691f2d2d
+  [ok] Claim MST confirmed in block 12146278, gas 162354
+  [ok] Claim complete on Ethereum Sepolia; secret revealed by the Claimed event
+
+=== Final state ===
+  [ok] F01 both swaps are Claimed (2) — MST Claimed, ETH Claimed
+  [ok] F02 MST moved from Alice to Bob exactly once — Alice -100000000000000000000, Bob +100000000000000000000
+  [ok] F03 ERC20HTLC released exactly the locked MST amount — vault delta -100000000000000000000
+  [ok] F04 ETHHTLC released exactly the locked ETH amount — vault delta -5000000000000000
+  [ok] F05 both Claimed events reveal the same preimage matching the hashlock — secret fingerprint 7550c6897140
+  asset            account  initial               locked                final                 net (initial->final)  release (locked->final)
+  ---------------  -------  --------------------  --------------------  --------------------  --------------------  -----------------------
+  MST              alice    1000000.0             999900.0              999900.0              -100.0                0.0
+  MST              bob      0.0                   0.0                   100.0                 100.0                 100.0
+  MST              htlc     0.0                   100.0                 0.0                   0.0                   -100.0
+  ETH Sepolia ETH  alice    0.105972120692962228  0.105972120669632148  0.105972120669632148  -0.00000000002333008  0.0
+  ETH Sepolia ETH  bob      0.039702101676566034  0.039702101676566034  0.039702101673318954  -0.00000000000324708  -0.00000000000324708
+  ETH Sepolia ETH  htlc     0.0                   0.0                   0.0                   0.0                   0.0
+  Arb Sepolia ETH  alice    0.0099815420059816    0.0099815420059816    0.0149805639352656    0.004999021929284     0.004999021929284
+  Arb Sepolia ETH  bob      0.0100028813200952    0.0049991628200952    0.0049991628200952    -0.0050037185         0.0
+  Arb Sepolia ETH  htlc     0.0                   0.005                 0.0                   0.0                   -0.005
+  [ok] success flow final checks: PASS
+
+=== Transaction summary ===
+  step         chain             tx hash                                                             explorer
+  -----------  ----------------  ------------------------------------------------------------------  --------------------------------------------------------------------------------------------------
+  approve MST  Ethereum Sepolia  0x4cf05d37becba531963b809fd9fd5ddaa01623579330e016e7067516f6fbf592  https://sepolia.etherscan.io/tx/0x4cf05d37becba531963b809fd9fd5ddaa01623579330e016e7067516f6fbf592
+  lock MST     Ethereum Sepolia  0x8b36a532b746b06daa2ccccd5b45727f304d5d0c4b671bb0ce847c51baba4ae3  https://sepolia.etherscan.io/tx/0x8b36a532b746b06daa2ccccd5b45727f304d5d0c4b671bb0ce847c51baba4ae3
+  lock ETH     Arbitrum Sepolia  0xb240ec7b387123804d73f5a77cdb1de33fcf2b86559aaa5c8260371e43ed20cf  https://sepolia.arbiscan.io/tx/0xb240ec7b387123804d73f5a77cdb1de33fcf2b86559aaa5c8260371e43ed20cf
+  claim ETH    Arbitrum Sepolia  0x93bf8eb237609d2e21e54d504af20ffcbd95ea8a815305a53971cfa1e0e19401  https://sepolia.arbiscan.io/tx/0x93bf8eb237609d2e21e54d504af20ffcbd95ea8a815305a53971cfa1e0e19401
+  claim MST    Ethereum Sepolia  0x2ab34ce1bde8cb5479d062e4547593a2bcb12f2237cd38a696121bcf691f2d2d  https://sepolia.etherscan.io/tx/0x2ab34ce1bde8cb5479d062e4547593a2bcb12f2237cd38a696121bcf691f2d2d
+
+=== Outcome ===
+  label: demo-success
+  status: completed
+  hashlock: 0xe6ed2bcaa88645f045ace7a16df43fb45f17a2b3ef0f2fbea5c0e453fbc324ed
+  ETH timelock: 2026-11-16T09:09:10.000Z | MST timelock: 2026-11-16T09:24:10.000Z
+  ETH claimed by Alice; secret revealed on Arbitrum Sepolia
+  MST claimed by Bob; atomic swap complete
+  state file: .runtime/swaps/demo-success.json

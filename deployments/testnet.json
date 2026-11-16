@@ -1,0 +1,50 @@
+{
+  "network": "testnet",
+  "updatedAt": "2026-11-16T08:53:54.709Z",
+  "chainIds": {
+    "ethereum": 11155111,
+    "arbitrum": 421614
+  },
+  "mstAddress": "0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2",
+  "mst": {
+    "name": "MySimpleToken",
+    "contract": "0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2",
+    "chainId": 11155111,
+    "txHash": "0x0f8720b48d4769ace39e7367daced00bdaa6a50544ccbc26c791f7394b39ef22",
+    "blockNumber": 12146270,
+    "deployer": "0x8D28660Ab655daB2a283F306583292c10c590009",
+    "explorer": "https://sepolia.etherscan.io",
+    "mintTo": "0x8D28660Ab655daB2a283F306583292c10c590009",
+    "mintAmount": "1000000000000000000000000",
+    "mintTxHash": "0xa4a11e302c01f919700fdb4ce71e54d9246ce492e5d60ef3a5c92dc42ffba894",
+    "abiSha256": "9c8d1ff9b7edf1b60bdf5347f2675dae394be939af913ea8f2a9ceee296f69b1",
+    "bytecodeSha256": "3673cf1e14c05a6dacf43feba1c1d2d44d894d1810cb16e32346927622b5616d",
+    "deployedAt": "2026-11-16T08:53:39.310Z"
+  },
+  "chains": {
+    "ethereum": {
+      "name": "ERC20HTLC",
+      "contract": "0xE1e8D859eA93841081f982f1d65a73640848E701",
+      "chainId": 11155111,
+      "txHash": "0x003d7c69e838babec7bd426ef55b0df5313efc9263510dab6f0e29752ce3bb49",
+      "blockNumber": 12146272,
+      "deployer": "0x8D28660Ab655daB2a283F306583292c10c590009",
+      "explorer": "https://sepolia.etherscan.io",
+      "abiSha256": "322a9a70c01f59f94b28aab83eb83c783ba0b8f0884e3f28824ee441faffa1ac",
+      "bytecodeSha256": "ed7b1348f99d51197ec06e04fb54cc1354bea595521525eb8e31f420210796f3",
+      "deployedAt": "2026-11-16T08:53:51.125Z"
+    },
+    "arbitrum": {
+      "name": "ETHHTLC",
+      "contract": "0x3E02C553F3Dac38267f005eEB19cb959be53fF0D",
+      "chainId": 421614,
+      "txHash": "0x25a054a26b88e314f358b6470b8a77d20fd13b1965aeb06375afdc51d4a00d96",
+      "blockNumber": 329731586,
+      "deployer": "0x8D28660Ab655daB2a283F306583292c10c590009",
+      "explorer": "https://sepolia.arbiscan.io",
+      "abiSha256": "04deb47a8264c9ce82c05f48837ac8b90862806b906529450676c8abbf557820",
+      "bytecodeSha256": "0592c394670fb535c2f14a4d62d695b1be041f222baf86345e272a6c7f890b45",
+      "deployedAt": "2026-11-16T08:53:54.708Z"
+    }
+  }
+}

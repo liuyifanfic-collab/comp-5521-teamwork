@@ -1,10 +1,27 @@
 {
-  "name": "a-role-erc20htlc",
+  "name": "comp5521-htlc-teamwork",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "doctor": "node scripts/cli.js doctor",
+    "deploy": "node scripts/cli.js deploy",
+    "deploy:mst": "node scripts/cli.js deploy-mst",
+    "deploy:local": "node scripts/cli.js deploy --network local --with-mst",
+    "secret": "node scripts/cli.js secret",
+    "approve": "node scripts/cli.js approve",
+    "lock": "node scripts/cli.js lock",
+    "verify": "node scripts/cli.js verify",
+    "status": "node scripts/cli.js status",
+    "claim": "node scripts/cli.js claim",
+    "refund": "node scripts/cli.js refund",
+    "swap:success": "node scripts/cli.js success",
+    "swap:refund": "node scripts/cli.js refund-flow",
+    "check:artifacts": "node scripts/cli.js check-artifacts",
+    "local:demo": "node scripts/local-demo.js",
+    "local:nodes": "node scripts/local/nodes.js start",
+    "local:stop": "node scripts/local/nodes.js stop"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",

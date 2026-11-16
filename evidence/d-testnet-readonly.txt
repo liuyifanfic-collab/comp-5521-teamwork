@@ -1,0 +1,60 @@
+D role — real testnet read-only check after deployment
+UTC: 2026-11-16T08:59:43Z
+This is a doctor run only; private keys are not printed.
+
+
+> comp5521-htlc-teamwork@1.0.0 doctor
+> node scripts/cli.js doctor
+
+
+=== Configuration ===
+  network mode: testnet
+  env file: /Users/hechang/Desktop/comp-5521-teamwork-main 2/.env
+  timelocks: ETH +900s, MST +1800s, gap 300s
+  confirmations: 1
+
+=== ABI and bytecode handoff ===
+  [ok] ERC20HTLC ABI — handoff ABI matches compiled artifact
+  [ok] ERC20HTLC bytecode — executable bytecode matches; only Solidity metadata hash differs
+  [ok] ERC20HTLC hashes — abi sha256 322a9a70c01f59f9…, bytecode sha256 ed7b1348f99d5119…
+  [ok] ETHHTLC ABI — handoff ABI matches compiled artifact
+  [ok] ETHHTLC bytecode — handoff bytecode matches compiled artifact
+  [ok] ETHHTLC hashes — abi sha256 04deb47a8264c9ce…, bytecode sha256 0592c394670fb535…
+
+=== Accounts ===
+  role      address                                     private key  source
+  --------  ------------------------------------------  -----------  ---------------------
+  deployer  (not configured)                            no           -
+  alice     0x8D28660Ab655daB2a283F306583292c10c590009  yes          env ALICE_PRIVATE_KEY
+  bob       0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc  yes          env BOB_PRIVATE_KEY
+  account  Ethereum Sepolia ETH  Arbitrum Sepolia ETH
+  -------  --------------------  --------------------
+  alice    0.105972120647006582  0.0149805639352656
+  bob      0.039702101673318954  0.0049948543516692
+
+=== Ethereum Sepolia ===
+  RPC: https://eth-sepolia.g.alchemy.com/…
+  [ok] chain ID 11155111, latest block 12146301
+  [ok] HTLC code present at 0xE1e8D859eA93841081f982f1d65a73640848E701 (deployments file)
+
+=== Arbitrum Sepolia ===
+  RPC: https://arbitrum-sepolia.infura.io/…
+  [ok] chain ID 421614, latest block 329732903
+  [ok] HTLC code present at 0x3E02C553F3Dac38267f005eEB19cb959be53fF0D (deployments file)
+
+=== MST on Ethereum Sepolia ===
+  [ok] token 0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2 — MST, 18 decimals
+  alice: 999900.0 MST
+  bob: 100.0 MST
+
+=== Deployment record ===
+  source: deployments/testnet.json
+  MST: 0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2
+  Ethereum Sepolia: 0xE1e8D859eA93841081f982f1d65a73640848E701 (ERC20HTLC)
+  Arbitrum Sepolia: 0x3E02C553F3Dac38267f005eEB19cb959be53fF0D (ETHHTLC)
+
+=== Readiness ===
+  [ok] 0 configuration/connectivity error(s), 1 warning(s)
+  [ok] READY to run the success and refund flows
+
+exit=0

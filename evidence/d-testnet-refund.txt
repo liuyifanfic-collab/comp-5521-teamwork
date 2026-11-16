@@ -1,0 +1,134 @@
+
+> comp5521-htlc-teamwork@1.0.0 swap:refund
+> node scripts/cli.js refund-flow --label demo-refund --eth-seconds 90 --mst-seconds 180 --min-gap 30 --eth-amount 0.002 --mst-amount 25
+
+
+=== Cross-chain timeout-recovery flow: demo-refund ===
+  hashlock: 0xb9af5115b8b0f9eec00e43ef26d2129b4f524cc2982c54de0d96287a49c339af
+  secret fingerprint: c423f310f7f2
+
+=== Preflight ===
+  account  Ethereum Sepolia ETH  Arbitrum Sepolia ETH  MST
+  -------  --------------------  --------------------  ------------
+  Alice    0.105972120669632148  0.0149805639352656    999900.0 MST
+  Bob      0.039702101673318954  0.0049991628200952    -
+  MST allowance: 0.0 MST (auto-approve will top it up if needed)
+  lock amounts: 25.0 MST / 0.002 ETH
+  timelocks: ETH +90s < MST +180s (safety gap 30s)
+  planned timelocks: ETH 2026-11-16T08:56:58.000Z (T2), MST 2026-11-16T08:58:28.000Z (T1), gap 1m 30s
+
+=== Step 1: lock MST on Ethereum Sepolia ===
+[2026-11-16T08:55:30.390Z] Approving MST: 25.0 MST for 0xE1e8D859eA93841081f982f1d65a73640848E701
+[2026-11-16T08:55:30.390Z] Approve MST: submitting transaction on Ethereum Sepolia
+  tx hash: 0xc38f2a73720cf8bcaccd1a5a9a4fc41f3d3b4787c68e8cd65bde575e367ff12c  https://sepolia.etherscan.io/tx/0xc38f2a73720cf8bcaccd1a5a9a4fc41f3d3b4787c68e8cd65bde575e367ff12c
+  [ok] Approve MST confirmed in block 12146281, gas 128884
+[2026-11-16T08:55:40.795Z] Lock MST: submitting transaction on Ethereum Sepolia
+  tx hash: 0x96a40bf5df4b6e1d13b019764731d9806946b2afa2745c52f94678c7416ae9ac  https://sepolia.etherscan.io/tx/0x96a40bf5df4b6e1d13b019764731d9806946b2afa2745c52f94678c7416ae9ac
+  [ok] Lock MST confirmed in block 12146282, gas 939700
+  [ok] MST locked: swapId 0xd7339bc8fa545ac8e754a1ee4e60f0c0efcf2b0a0003444950933f411886ce8e, amount 25.0 MST, timelock 2026-11-16T08:58:28.000Z
+
+=== Step 2: lock ETH on Arbitrum Sepolia ===
+[2026-11-16T08:55:52.747Z] Lock ETH: submitting transaction on Arbitrum Sepolia
+  tx hash: 0x99760fa121365ea04f2a0ee788775f0fe300394277047d651741e72b72d2947d  https://sepolia.arbiscan.io/tx/0x99760fa121365ea04f2a0ee788775f0fe300394277047d651741e72b72d2947d
+  [ok] Lock ETH confirmed in block 329732040, gas 168825
+  [ok] ETH locked: swapId 0xebed4a0963ff66f855a0e1b73285c9c2dd0269b9f79d8c0373257e3438a1c6f3, amount 0.002 ETH, timelock 2026-11-16T08:56:58.000Z
+
+=== Cross-chain verification ===
+  [ok] V01 both swaps exist — MST status 1, ETH status 1
+  [ok] V02 both locks share the same hashlock — 0xb9af5115b8b0f9eec00e43ef26d2129b4f524cc2982c54de0d96287a49c339af vs 0xb9af5115b8b0f9eec00e43ef26d2129b4f524cc2982c54de0d96287a49c339af
+  [ok] V03 keccak256(secret) equals the hashlock — 0xb9af5115b8b0f9eec00e43ef26d2129b4f524cc2982c54de0d96287a49c339af
+  [ok] V04 MST lock uses the configured MST token — 0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2 vs 0x64A024DF050eeaEB1f0Dd7d8A9b587E8b6EB3Ef2
+  [ok] V05 ETH lock uses address(0) as the asset marker — 0x0000000000000000000000000000000000000000
+  [ok] V06 participants are mirrored across chains — MST 0x8D28660Ab655daB2a283F306583292c10c590009->0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc; ETH 0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc->0x8D28660Ab655daB2a283F306583292c10c590009
+  [ok] V07a MST amount matches the scenario — 25.0 MST (expected 25.0 MST)
+  [ok] V07b ETH amount matches the scenario — 0.002 ETH (expected 0.002 ETH)
+  [ok] V08 T_ETH < T_MST with the configured safety gap — ETH 2026-11-16T08:56:58.000Z < MST 2026-11-16T08:58:28.000Z, gap 1m 30s (minimum 30s)
+  [ok] V09 both swaps have status Active (1) — MST Active (1), ETH Active (1)
+  [ok] V10 both claim windows are still open — MST in 2m 40s; ETH in 1m 4s
+  [ok] V11 the two chains have distinct chain IDs — 11155111 vs 421614
+  [ok] V12a MST swap belongs to the configured ERC20HTLC — 0xE1e8D859eA93841081f982f1d65a73640848E701
+  [ok] V12b ETH swap belongs to the configured ETHHTLC — 0x3E02C553F3Dac38267f005eEB19cb959be53fF0D
+  [ok] V13 ERC20HTLC holds at least the locked MST amount — 25.0 MST vs 25.0 MST
+  [ok] V14 ETHHTLC holds at least the locked ETH amount — 0.002 ETH vs 0.002 ETH
+  [ok] V15ethereum saved ethereum record matches on-chain state — 0xd7339bc8fa545ac8e754a1ee4e60f0c0efcf2b0a0003444950933f411886ce8e
+  [ok] V15arbitrum saved arbitrum record matches on-chain state — 0xebed4a0963ff66f855a0e1b73285c9c2dd0269b9f79d8c0373257e3438a1c6f3
+  overall: PASS
+
+=== Negative checks before expiry (read-only eth_call) ===
+  [ok] ETH refund before expiry (Bob): reverted as expected -> SwapNotExpired(0xebed4a0963ff66f855a0e1b73285c9c2dd0269b9f79d8c0373257e3438a1c6f3) — The timelock has not passed yet; a refund is only allowed at/after expiry.
+  [ok] ETH claim with a wrong secret (Alice): reverted as expected -> InvalidSecret(0xebed4a0963ff66f855a0e1b73285c9c2dd0269b9f79d8c0373257e3438a1c6f3) — The secret does not match keccak256(abi.encodePacked(secret)).
+  [ok] ETH claim by the sender, not the recipient (Bob): reverted as expected -> UnauthorizedReceiver(0xebed4a0963ff66f855a0e1b73285c9c2dd0269b9f79d8c0373257e3438a1c6f3, 0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc) — Only the recorded recipient can claim this swap.
+  [ok] MST refund by the recipient, not the sender (Bob): reverted as expected -> UnauthorizedSender(0xd7339bc8fa545ac8e754a1ee4e60f0c0efcf2b0a0003444950933f411886ce8e, 0xbFA8ced05Ea0331506cca8C303Eed96a9cd874dc) — Only the original sender can refund this swap.
+  [ok] MST claim by the sender, not the recipient (Alice): reverted as expected -> UnauthorizedReceiver(0xd7339bc8fa545ac8e754a1ee4e60f0c0efcf2b0a0003444950933f411886ce8e, 0x8D28660Ab655daB2a283F306583292c10c590009) — Only the recorded recipient can claim this swap.
+  [ok] negative checks: PASS
+
+=== Step 3: wait for T_ETH, then refund ETH ===
+[2026-11-16T08:55:58.983Z] Waiting for timelock: Arbitrum Sepolia until 2026-11-16T08:56:58.000Z (in 1m)
+  waiting 1m (latest 2026-11-16T08:55:58.000Z)
+  waiting 44s (latest 2026-11-16T08:56:14.000Z)
+  waiting 28s (latest 2026-11-16T08:56:30.000Z)
+  waiting 13s (latest 2026-11-16T08:56:45.000Z)
+  waiting 5s (latest 2026-11-16T08:56:53.000Z)
+  waiting 2s (latest 2026-11-16T08:56:56.000Z)
+  waiting 1s (latest 2026-11-16T08:56:57.000Z)
+  [ok] Arbitrum Sepolia reached 2026-11-16T08:56:59.000Z
+  [ok] ETH claim after expiry (Alice): reverted as expected -> SwapExpired(0xebed4a0963ff66f855a0e1b73285c9c2dd0269b9f79d8c0373257e3438a1c6f3) — The claim window has closed; the sender may refund at/after the timelock.
+[2026-11-16T08:57:01.063Z] Refund ETH: submitting transaction on Arbitrum Sepolia
+  tx hash: 0x84a4973c2fba6a9c6a8b76d90f111ee834ae74d0c74d23d448ee9e4f6395cacb  https://sepolia.arbiscan.io/tx/0x84a4973c2fba6a9c6a8b76d90f111ee834ae74d0c74d23d448ee9e4f6395cacb
+  [ok] Refund ETH confirmed in block 329732289, gas 45153
+  [ok] Refund complete on Arbitrum Sepolia
+
+=== Step 4: wait for T_MST, then refund MST ===
+[2026-11-16T08:57:03.756Z] Waiting for timelock: Ethereum Sepolia until 2026-11-16T08:58:28.000Z (in 1m 28s)
+  waiting 1m 28s (latest 2026-11-16T08:57:00.000Z)
+  waiting 1m 16s (latest 2026-11-16T08:57:12.000Z)
+  waiting 1m 4s (latest 2026-11-16T08:57:24.000Z)
+  waiting 40s (latest 2026-11-16T08:57:48.000Z)
+  waiting 28s (latest 2026-11-16T08:58:00.000Z)
+  waiting 16s (latest 2026-11-16T08:58:12.000Z)
+  waiting 4s (latest 2026-11-16T08:58:24.000Z)
+  waiting 4s (latest 2026-11-16T08:58:24.000Z)
+  waiting 4s (latest 2026-11-16T08:58:24.000Z)
+  [ok] Ethereum Sepolia reached 2026-11-16T08:58:36.000Z
+  [ok] MST claim after expiry (Bob): reverted as expected -> SwapExpired(0xd7339bc8fa545ac8e754a1ee4e60f0c0efcf2b0a0003444950933f411886ce8e) — The claim window has closed; the sender may refund at/after the timelock.
+[2026-11-16T08:58:39.812Z] Refund MST: submitting transaction on Ethereum Sepolia
+  tx hash: 0x1288ff3efe4ca8eb8d32a15ff33c7d6845599b3c2d99737838ef7ca0c3a45a22  https://sepolia.etherscan.io/tx/0x1288ff3efe4ca8eb8d32a15ff33c7d6845599b3c2d99737838ef7ca0c3a45a22
+  [ok] Refund MST confirmed in block 12146297, gas 65994
+  [ok] Refund complete on Ethereum Sepolia
+
+=== Final state ===
+  [ok] R01 both swaps are Refunded (3) — MST Refunded, ETH Refunded
+  [ok] R02 Alice recovered the full MST amount after the lock — Alice delta 25000000000000000000
+  [ok] R03 ERC20HTLC released the locked MST amount — vault delta -25000000000000000000
+  [ok] R04 ETHHTLC released the locked ETH amount — vault delta -2000000000000000
+  [ok] R05 no claim was recorded in the recovery scenario — both assets returned through refund()
+  asset            account  initial               locked                final                 net (initial->final)   release (locked->final)
+  ---------------  -------  --------------------  --------------------  --------------------  ---------------------  -----------------------
+  MST              alice    999900.0              999875.0              999900.0              0.0                    25.0
+  MST              bob      100.0                 100.0                 100.0                 0.0                    0.0
+  MST              htlc     0.0                   25.0                  0.0                   0.0                    -25.0
+  ETH Sepolia ETH  alice    0.105972120669632148  0.105972120648260468  0.105972120647006582  -0.000000000022625566  -0.000000000001253886
+  ETH Sepolia ETH  bob      0.039702101673318954  0.039702101673318954  0.039702101673318954  0.0                    0.0
+  ETH Sepolia ETH  htlc     0.0                   0.0                   0.0                   0.0                    0.0
+  Arb Sepolia ETH  alice    0.0149805639352656    0.0149805639352656    0.0149805639352656    0.0                    0.0
+  Arb Sepolia ETH  bob      0.0049991628200952    0.0029957593080952    0.0049948543516692    -0.000004308468426     0.001999095043574
+  Arb Sepolia ETH  htlc     0.0                   0.002                 0.0                   0.0                    -0.002
+  [ok] recovery flow final checks: PASS
+
+=== Transaction summary ===
+  step         chain             tx hash                                                             explorer
+  -----------  ----------------  ------------------------------------------------------------------  --------------------------------------------------------------------------------------------------
+  approve MST  Ethereum Sepolia  0xc38f2a73720cf8bcaccd1a5a9a4fc41f3d3b4787c68e8cd65bde575e367ff12c  https://sepolia.etherscan.io/tx/0xc38f2a73720cf8bcaccd1a5a9a4fc41f3d3b4787c68e8cd65bde575e367ff12c
+  lock MST     Ethereum Sepolia  0x96a40bf5df4b6e1d13b019764731d9806946b2afa2745c52f94678c7416ae9ac  https://sepolia.etherscan.io/tx/0x96a40bf5df4b6e1d13b019764731d9806946b2afa2745c52f94678c7416ae9ac
+  lock ETH     Arbitrum Sepolia  0x99760fa121365ea04f2a0ee788775f0fe300394277047d651741e72b72d2947d  https://sepolia.arbiscan.io/tx/0x99760fa121365ea04f2a0ee788775f0fe300394277047d651741e72b72d2947d
+  refund ETH   Arbitrum Sepolia  0x84a4973c2fba6a9c6a8b76d90f111ee834ae74d0c74d23d448ee9e4f6395cacb  https://sepolia.arbiscan.io/tx/0x84a4973c2fba6a9c6a8b76d90f111ee834ae74d0c74d23d448ee9e4f6395cacb
+  refund MST   Ethereum Sepolia  0x1288ff3efe4ca8eb8d32a15ff33c7d6845599b3c2d99737838ef7ca0c3a45a22  https://sepolia.etherscan.io/tx/0x1288ff3efe4ca8eb8d32a15ff33c7d6845599b3c2d99737838ef7ca0c3a45a22
+
+=== Outcome ===
+  label: demo-refund
+  status: completed
+  hashlock: 0xb9af5115b8b0f9eec00e43ef26d2129b4f524cc2982c54de0d96287a49c339af
+  ETH timelock: 2026-11-16T08:56:58.000Z | MST timelock: 2026-11-16T08:58:28.000Z
+  ETH refunded to Bob
+  MST refunded to Alice
+  state file: .runtime/swaps/demo-refund.json
