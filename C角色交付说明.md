@@ -10,8 +10,8 @@
 |---|---|
 | 页面功能（C1–C4） | ✅ 完成 |
 | 本地双链 Mock 联调 | ✅ 完成：成功交换、双边超时退款、5 种合约应拒绝的无效操作，手动测试全部通过（见「测试」） |
-| 接入测试网真实合约 | ⏳ 待 D 部署后填写地址并联调 |
-| 代码提交 | ⏳ 在本地分支 `feat/c-frontend`，尚未推送 |
+| 接入测试网真实合约 | ✅ 完成：2026-11-23 用 MetaMask 在 Sepolia / Arbitrum Sepolia 上跑通成功交换与双边超时退款（见「测试」） |
+| 代码提交 | ✅ 已通过 PR #2 合并到 `main` |
 
 ## 产物
 
@@ -129,7 +129,17 @@ React Bits 组件对应的用途：
 - 覆盖的无效操作及合约返回：到期前退款（`SwapNotExpired`）、非收款人领取（`UnauthorizedReceiver`）、T2 不早于 T1（页面拦截，不发交易）、错误 secret（`InvalidSecret`）、过期后领取（`SwapExpired`）。另含核验金额不符时禁止锁定 ETH、长按按钮轻点不触发。
 - 测试之后的界面调整（默认背景改为 Dark Veil、角色标签与账户同步）已在浏览器中重新验证，不涉及协议逻辑。
 - 重写后的协议层已在本地双链上验证：一轮完整成功交换（含 Bob 核验金额不符被拦截）、T2 晚于 T1 被拦截、未授权锁定、格式错误 / 内容错误的 secret、过期后长按退款，结果均符合预期；完整的 `TEST-CASES.md` 用例建议在演示前再按文档执行一遍并更新日期。
-- 本地测试不等于测试网验证：测试网联调、MetaMask 实际签名、公共 RPC 下的事件查询仍待 D 部署后完成。
+- **测试网联调（2026-11-23）**：使用 D 部署的合约（地址见 `deployments/testnet.json`），两个 MetaMask 测试账户在同一浏览器中分别扮演 Alice / Bob，全部通过前端操作完成，实际签名、公共 RPC 读状态与 Claimed 事件查询均正常。链上记录如下：
+
+  | 流程 | 链 | swapId | 结果 | 交易 |
+  |---|---|---|---|---|
+  | 成功交换 | Sepolia（MST 200） | `0x797bb61de9386b202ca8eecf5c6199d907a2c3e50a9de446936c68e4e2304cd8` | Claimed（Bob 领取 MST） | 锁定 `0x649daeaa…d379`，领取 `0x76044907…2541` |
+  | 成功交换 | Arbitrum Sepolia（ETH 0.01） | `0x44a0cb370dff091efd3596bbbf6ccc127c6b4fb171dcc66f5c4eb5e21f260d7f` | Claimed（Alice 领取 ETH，公开 secret） | 锁定 `0xda255fac…a0a`，领取 `0x58b7e839…49f1` |
+  | 超时退款 | Sepolia（MST 50，T1 8 分钟） | `0xcfdc4c60c5d6005a594d73146bc5c99b243066336adc1fd8f4cdf4da1d4a9e63` | Refunded（Alice 退回 MST） | 锁定 `0x3d60fe19…93f7`，退款 `0xb0393421…5711` |
+  | 超时退款 | Arbitrum Sepolia（ETH 0.005，T2 3 分钟） | `0x83ec605f46e35a7697656ea20d268ddfd959e1082f4ea4c64b1d1c596ccfcd9b` | Refunded（Bob 退回 ETH） | 锁定 `0x3b12a425…c5d4`，退款 `0x7f4f2304…720f` |
+
+  每组两条链上的 hashlock 一致；成功交换中 T2（14:49:19 UTC）早于 T1（15:03:48 UTC），退款中 T2（14:44:45）早于 T1（14:48:48），Bob 先于 Alice 退款。
+- 测试网上遇到的问题：Arbitrum Sepolia 上 MetaMask 偶尔把 max fee 估得略低于区块 base fee，交易被节点拒绝（未上链、未扣费），重试即可；Alice 领取 ETH 时出现过一次，重试后成功。
 
 ## 已知限制
 
@@ -142,5 +152,5 @@ React Bits 组件对应的用途：
 
 | 角色 | 事项 |
 |---|---|
-| D | 部署后提供 ERC20HTLC（Sepolia）、MST（Sepolia）、ETHHTLC（Arbitrum Sepolia）地址与部署区块，填入 `frontend/.env.local`；与 C 一起在测试网跑通 `TEST-CASES.md` 的成功与退款流程 |
-| C | 测试网联调与修复；将 `feat/c-frontend` 推送并发起合并 |
+| D | ✅ 已提供 ERC20HTLC（Sepolia）、MST（Sepolia）、ETHHTLC（Arbitrum Sepolia）地址与部署区块（`deployments/testnet.json`），并向 C 的测试账户转入 MST |
+| C | ✅ 已填入 `frontend/.env.local` 并用 MetaMask 在测试网跑通成功与退款流程；✅ 前端已合并到 `main` |
